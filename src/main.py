@@ -2,6 +2,7 @@ import os
 import pdb
 import time
 import json
+import logging
 import requests
 import datetime
 import sqlalchemy
@@ -9,6 +10,21 @@ import pandas as pd
 from binance import Client # API wrapper from https://github.com/sammchardy/python-binance
 from dotenv import load_dotenv, find_dotenv
 from binance.exceptions import BinanceAPIException
+
+# Logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s | %(name)s | %(levelname).4s | %(message)s")
+
+BNB = "BNB.BNB"
+RUNE = "BNB.RUNE-B1A"
+USDT = "ETH.USDT-0XDAC17F958D2EE523A2206206994597C13D831EC7"
+stablecoins = ["USDC", "USDT", "BUSD"]
+CACAO = "MAYA.CACAO"
+
+def raise_for_non_bnb(coin): #Remove if not used
+    if coin.asset != BNB:
+        raise Exception(f"must start with BNB: got {coin}")
 
 # Safe key management
 load_dotenv(find_dotenv())
